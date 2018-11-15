@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Attention Lab Prototype | A-Frame</title>
+    <meta name="description" content="Attention Lab Prototype • A-Frame">
+    <meta name="author" content="Roland Dubois">
+    
+    <!-- A-Frame 0.8.2 -->
+    <!-- `preload="auto"` needs to be removed from audio if using this version -->
+    <!-- <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script> -->
+    
+    <!-- A-Frame master -->
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@826e983d989312fe7cd75b9cc92e58b7a5cc195f/dist/aframe-master.min.js"></script>
+    
+    <!-- A-Frame Extras -->
+    <script src="https://unpkg.com/aframe-extras@4.2.0/dist/aframe-extras.min.js"></script>
+    
+    <!-- Recast Plugin -->
+    <!-- <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script> -->
+    
+  </head>
+  
+  <body>
+    
+    <a-scene stats="true" background="color: #ECECEC" renderer="gammaOutput: true; antialias: true;" light="defaultLightsEnabled: true;">
+      
+      <!-- Assets -->
+      <a-assets timeout="30000">
+        
+      	<audio id="music" src="/assets/underground-pleasure-seeker.mp3" preload="auto" crossorigin="anonymous"></audio>
+        
+        <audio id="battle" src="/assets/explosions-battlefield-distant-ambience-war.mp3" preload="auto" crossorigin="anonymous"></audio>
+
+        <a-asset-item id="bunker" src="/assets/bunker_textured.glb" response-type="arraybuffer"></a-asset-item>
+        
+        <a-asset-item id="navmesh" src="/assets/bunker_navmesh.gltf"></a-asset-item>        
+        
+		<a-mixin id="speaker" geometry="primitive: box;" material="color: white; shader: flat;" scale="0.25 0.25 0.25" sound="src: #music; autoplay: true; loop: true; distanceModel: exponential; rolloffFactor: 2; refDistance: 2; volume: 1;" visible="true"></a-mixin> 
+        
+      </a-assets>
+      
+      <!-- Camera Rig -->
+      <a-entity id="rig" movement-controls="constrainToNavMesh: true; speed: 0.2;" position="5 0 7">
+        <!-- Camera -->
+        <a-entity camera="far: 100;" look-controls="pointerLockEnabled: true; reverseTouchDrag: true;" wasd-controls="enabled: false;" position="0 1.6 0"></a-entity>
+        <!-- Laser Controls -->
+        <a-entity laser-controls="hand: left;" line="visible: false;"></a-entity>
+        <a-entity laser-controls="hand: right;" line="visible: false;"></a-entity>  
+      </a-entity>
+      
+      <!-- Bunker and Nav-mesh -->
+      <a-entity gltf-model="#bunker"></a-entity>
+      <a-entity gltf-model="#navmesh" nav-mesh visible="false"></a-entity>
+      
+      <!-- Audio -->
+      <a-entity mixin="speaker" position="5 4 5"></a-entity>
+      <a-entity sound="src: #battle; autoplay: true; loop: true; positional: true; distanceModel: exponential; refDistance: 10;" position="0 5 0"></a-entity>
+      
+    </a-scene>
+  </body>
+</html>
